@@ -10,7 +10,7 @@ rng(1);
 
 %$SET THE VIDEO PATH - change this to point to the dataset!
 
-video_path = 'C:/Users/Rodrigo/Desktop/PanGAEA/';
+video_path = 'C:/Users/rodri/OneDrive/Desktop/PanGAEAonline/';
 
 
 %%Choose a video
@@ -37,7 +37,7 @@ dataset = 'tennis';
 VIDEOPATH = strcat(video_path,dataset,'/');
 
 %Also change below path!
-video_path_truth = 'C:/Users/Rodrigo/Desktop/PanGAEA/Annotations/';
+video_path_truth = 'C:/Users/rodri/OneDrive/Desktop/PanGAEAonline/Annotations/';
 VIDEOPATH_TRUTH = strcat(video_path_truth,dataset,'/');
 
 scale = 0.25;   %resolution

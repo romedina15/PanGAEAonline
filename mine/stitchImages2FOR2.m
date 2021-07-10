@@ -1,4 +1,4 @@
-function [frames] = stitchImages2FOR2(pastIt, currentIt)
+function [frames, gxlim, gylim] = stitchImages2FOR2(pastIt, currentIt, gxlim, gylim)
     
     % Parse mandatory inputs
     Nc = size(pastIt.image,3);
@@ -8,10 +8,13 @@ function [frames] = stitchImages2FOR2(pastIt, currentIt)
     
     % Compute stitched image limits
     [currentIt, xlim, ylim] = computeStitchedLimits(pastIt, currentIt);
+    gxlim(1) = min(xlim(1), gxlim(1));
+    gxlim(2) = max(xlim(2), gxlim(2));
+    gylim(1) = min(ylim(1), gylim(1));
+    gylim(2) = max(ylim(2), gylim(2));
     
     % Get sample points
-    [x, y, w, h] = getSamplePoints(xlim,ylim,dim);
-    
+    [x, y, w, h] = getSamplePoints(gxlim,gylim,dim);
     % Stitch images
     empty = nan(h,w,Nc);
     [frames] = overlayImage(empty,currentIt,x,y);
@@ -32,6 +35,7 @@ function [currentIt, xlim, ylim] = computeStitchedLimits(pastIt, currentIt)
 
     xlim = [floor(minx), ceil(maxx)];
     ylim = [floor(miny), ceil(maxy)];
+    
 
 %--------------------------------------------------------------------------
 function [xlim, ylim] = getOutputLimits(I,H)
