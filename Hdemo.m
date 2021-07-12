@@ -16,12 +16,12 @@ video_path = 'C:/Users/rodri/OneDrive/Desktop/PanGAEAonline/';
 %%Choose a video
 
 % dataset = 'dog-gooses/';
-% dataset = 'horsejump-high';
+ dataset = 'horsejump-high';
 % dataset = 'horsejump-low';
 % dataset = 'lucia';
 % dataset = 'paragliding';
 % dataset = 'swing';
-dataset = 'tennis';
+%dataset = 'tennis';
 % dataset = 'flamingo';
 % dataset = 'paragliding-launch';
 % dataset = 'stroller';
