@@ -1,8 +1,7 @@
 function [Y,Mask,M,N] = homographyStitchFOR2(VIDEOPATH,isRGB,scale)
-
 filename = VIDEOPATH;
 imagefiles = dir(filename);
-nfiles = 70;
+nfiles = 50;
 nfiles = min(nfiles+2, length(imagefiles)-2);
 %nfiles = length(imagefiles);    % Number of files found
 
@@ -43,9 +42,11 @@ pastIt.tform = eye(3,3);
 gxlim = [inf, -inf];
 gylim = [inf, -inf];
 
+
+
+ctmre = 0;
 %For each frame do
-for ii=4:nfiles
-    
+for ii=4:nfiles    
     %Next iteration
     frameidx = frameidx + 1;
     
@@ -88,10 +89,47 @@ for ii=4:nfiles
     currentIt.tform = pastIt.tform*inv(tform.T);
     
     %Update global limits
-    %[gxlim, gylim] = updateGlobal(pastIt, currentIt, gxlim, gylim);
     [ccFrame, gxlim, gylim] = stitchImages2FOR2(pastIt, currentIt, gxlim, gylim);
-    ccFrame = uint8(ccFrame*255);
-    figure(6),imagesc(ccFrame);  axis image
+    temp = uint8(ccFrame*255);
+    figure(6),imagesc(temp);  axis image
+    
+    %Calling PanGAEA
+    [M, N, c] = size(ccFrame);
+    Y = ccFrame(:);
+    Mask = ~isnan(Y);
+    Y(isnan(Y)) = 0;
+    
+    dim = size(Y,1);
+    r = 5;
+    if ctmre == 0
+        %U = Y;
+        U = orth(randn(dim,r));
+        ctmre = 1;
+    end
+    
+    %Need to compute U' by resizing current U
+    U = imresize(U, [dim, r]);
+    
+    %Need to use PanGAEA to update U'
+    %First set of varaibles
+    opts = struct();
+
+    opts.lambdaZ = 1;
+    opts.lambdaS = 0.5;
+    opts.lambdaE = 1;
+
+    opts.cleanLS = false;
+    opts.max_cycles = 7;
+
+    opts.mask = Mask;
+    opts.height = M;
+    opts.width = N;
+    opts.startStep = 1;
+    
+   
+    
+    [U, pano, L_tvgrasta, E_tvgrasta, S_tvgrasta, S_tvgrasta_disp, Lreg_tvgrasta, Ereg_tvgrasta, Sreg_tvgrasta] = run_pangaeaH(U, Y, c,opts);
+    figure(7),imagesc(pano);  axis image
     %Saving struct
     pastIt = currentIt;
     pastfeatures = currentfeatures;

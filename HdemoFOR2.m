@@ -2,6 +2,7 @@ close all
 clear
 clc
 addpath('mine/');
+addpath('src/');
 
 % Load Panoramic Video Data
 

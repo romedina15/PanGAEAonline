@@ -12,8 +12,8 @@ function video = pano2video_RGB(frames,mask,height,width,videoSize)
 %
 
 video = zeros(videoSize);
-for k = 1:videoSize(4)
-    maskk = reshape(mask(1:height * width,k),height,width);
+
+    maskk = reshape(mask(1:height * width,1),height,width);
     [I, J] = find(maskk > max(maskk(:)) / 2);
     IJ = [I, J];
     [~, idx] = min(IJ * [1, 1; -1, -1; 1, -1; -1, 1].');
@@ -24,8 +24,7 @@ for k = 1:videoSize(4)
     Tk = fitgeotrans(movingPoints,fixedPoints,'projective');
     
     R = imref2d([height, width],[1, width],[1, height]);
-    imgWarped = imwarp(frames(:,:,:,k),R,Tk,'OutputView',R);
-    video(:,:,1,k) = imresize(imgWarped(:,:,1),videoSize(1:2));
-    video(:,:,2,k) = imresize(imgWarped(:,:,2),videoSize(1:2));
-    video(:,:,3,k) = imresize(imgWarped(:,:,3),videoSize(1:2));
-end
+    imgWarped = imwarp(frames(:,:,:),R,Tk,'OutputView',R);
+    video(:,:,1) = imresize(imgWarped(:,:,1),videoSize(1:2));
+    video(:,:,2) = imresize(imgWarped(:,:,2),videoSize(1:2));
+    video(:,:,3) = imresize(imgWarped(:,:,3),videoSize(1:2));

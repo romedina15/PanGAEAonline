@@ -1,4 +1,4 @@
-function [ e, s, xi, w,y3] = admm_srp_pangaea( U, v, Bf, C, idx, OPTIONS, OPTS)
+function [ e, s, xi, w,y3] = admm_srp_pangaeaH( U, v, Bf, C, idx, OPTIONS, OPTS)
 
 %%MODEL: amin TV(S) + ||S||_1 + ||E||_1
 %% Global constants and defaults
@@ -128,5 +128,6 @@ end
 function y = shrinkage(a, kappa)
     y = max(0, a-kappa) - max(0, -a-kappa);
 end
+
 
 
