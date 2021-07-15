@@ -12,7 +12,7 @@ function video = pano2video(frames,mask,height,width,videoSize)
 %
 
 video = zeros(videoSize);
-for k = 1:videoSize(4)
+for k = 1:1
     maskk = reshape(mask(:,k),height,width);
     [I, J] = find(maskk > max(maskk(:)) / 2);
     IJ = [I, J];

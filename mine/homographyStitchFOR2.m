@@ -46,7 +46,7 @@ gylim = [inf, -inf];
 
 ctmre = 0;
 %For each frame do
-for ii=4:nfiles    
+for ii=4:nfiles
     %Next iteration
     frameidx = frameidx + 1;
     
@@ -96,8 +96,12 @@ for ii=4:nfiles
     %Calling PanGAEA
     [M, N, c] = size(ccFrame);
     Y = ccFrame(:);
+    
+    %[M, N, c] = size(store_frame);
+    %Y = store_frame(:);
     Mask = ~isnan(Y);
     Y(isnan(Y)) = 0;
+    
     
     dim = size(Y,1);
     r = 5;
@@ -108,7 +112,9 @@ for ii=4:nfiles
     end
     
     %Need to compute U' by resizing current U
-    U = imresize(U, [dim, r]);
+    pastdim = size(U,1);
+    U = [U; zeros(dim - pastdim, r)];
+    %U = imresize(U, [dim, r]);
     
     %Need to use PanGAEA to update U'
     %First set of varaibles
@@ -128,8 +134,9 @@ for ii=4:nfiles
     
    
     
-    [U, pano, L_tvgrasta, E_tvgrasta, S_tvgrasta, S_tvgrasta_disp, Lreg_tvgrasta, Ereg_tvgrasta, Sreg_tvgrasta] = run_pangaeaH(U, Y, c,opts);
-    figure(7),imagesc(pano);  axis image
+    [U, pano, L_tvgrasta, E_tvgrasta, S_tvgrasta, S_tvgrasta_disp, Lreg_tvgrasta, Ereg_tvgrasta, Sreg_tvgrasta] = run_pangaeaH(U, Y, c, opts);
+    figure(7),imagesc(Lreg_tvgrasta);  axis image
+    figure(8),imagesc(Sreg_tvgrasta);  axis image
     %Saving struct
     pastIt = currentIt;
     pastfeatures = currentfeatures;

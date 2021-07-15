@@ -49,6 +49,14 @@ if isRGB
     
     [Lreg, Ereg, Sreg_disp] = formatForDisplay(Lreg,Ereg,Sreg,M);
     
+    for i=1:size(Lreg,4)
+    im = Lreg(:,:,:,i);
+    figure(7),imagesc((im));  axis image
+    im = Sreg_disp(:,:,:,i);
+    figure(8),imagesc((im));  axis image
+    end
+    
+    
     L = pano2video_RGB(Lreg,mask,height,width,size(Ynoisy));
     E = pano2video_RGB(Ereg,mask,height,width,size(Ynoisy));
     S = pano2video_RGB(Sreg,mask,height,width,size(Ynoisy));

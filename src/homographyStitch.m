@@ -3,7 +3,7 @@ function [Y,Ytrue,Ynoisy,Mask,M,N,STITCHING] = homographyStitch(VIDEOPATH,isRGB,
 filename = VIDEOPATH;
 imagefiles = dir(filename);
 nfiles = length(imagefiles);    % Number of files found
-nfiles = 20;
+nfiles = 50;
 nfiles = min(nfiles+2, length(imagefiles)-2);
 %nfiles = round(nfiles/2);
 

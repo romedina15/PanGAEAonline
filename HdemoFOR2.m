@@ -17,12 +17,12 @@ video_path = 'C:/Users/rodri/OneDrive/Desktop/PanGAEAonline/';
 %%Choose a video
 
 % dataset = 'dog-gooses/';
-dataset = 'horsejump-high';
+%dataset = 'horsejump-high';
 % dataset = 'horsejump-low';
 % dataset = 'lucia';
 % dataset = 'paragliding';
 % dataset = 'swing';
-% dataset = 'tennis';
+ dataset = 'tennis';
 % dataset = 'flamingo';
 % dataset = 'paragliding-launch';
 % dataset = 'stroller';
@@ -41,7 +41,7 @@ VIDEOPATH = strcat(video_path,dataset,'/');
 video_path_truth = 'C:/Users/rodri/OneDrive/Desktop/PanGAEAonline/Annotations/';
 VIDEOPATH_TRUTH = strcat(video_path_truth,dataset,'/');
 
-scale = 0.25;   %resolution
+scale = 1;   %resolution
 isRGB = 1;          %1 for RGB; 0 for grayscale
 
 [Yreg,mask,height,width] = homographyStitchFOR2(VIDEOPATH,isRGB,scale);

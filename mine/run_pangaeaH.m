@@ -1,4 +1,4 @@
-function [U, pano, L, E, S, S_disp, Lreg, Ereg, Sreg_disp] = run_pangaeaH(U, Y, c,varargin)
+function [U, pano, L, E, S, S_disp, Lreg, Ereg, Sreg_disp] = run_pangaeaH(U, Y, c, varargin)
 %              
 % Description:  Performs foreground-background separation via the
 %               PanGAEA method
@@ -32,7 +32,6 @@ else
     opts.channels = 1;
 end
 [U, Lhat, Ehat, Shat] = pangaeaH(U, Y,lambdaZ,lambdaE,lambdaS, opts);
-
 if isRGB
     %
     % Color images
@@ -50,6 +49,7 @@ if isRGB
     
     [Lreg, Ereg, Sreg_disp] = formatForDisplay(Lreg,Ereg,Sreg,M);
     
+    
     L = pano2video_RGB(Lreg,mask,height,width,[height, width, c]);
     E = pano2video_RGB(Ereg,mask,height,width,[height, width, c]);
     S = pano2video_RGB(Sreg,mask,height,width,[height, width, c]);
@@ -65,10 +65,10 @@ else
     %
     
     % Generate forground/background video
-    Lreg = reshape(Lhat,[height, width, size(Yreg,2)]);
-    Ereg = reshape(Ehat,[height, width, size(Yreg,2)]);
-    Sreg = reshape(Shat,[height, width, size(Yreg,2)]);
-    M = logical(reshape(mask,[height, width, size(Yreg,2)]));
+    Lreg = reshape(Lhat,[height, width, c]);
+    Ereg = reshape(Ehat,[height, width, c]);
+    Sreg = reshape(Shat,[height, width, c]);
+    M = logical(reshape(mask,[height, width, c]));
 
     if cleanLS
         [Lreg, Sreg] = adjustLS(Lreg,Sreg,M);
@@ -76,12 +76,12 @@ else
     end
 
     [Lreg, Ereg, Sreg_disp] = formatForDisplay(Lreg,Ereg,Sreg,M);
-    L = pano2video(Lreg,mask,height,width,size(Ynoisy));
-    E = pano2video(Ereg,mask,height,width,size(Ynoisy));
-    S = pano2video(Sreg,mask,height,width,size(Ynoisy));
-    S_disp = pano2video(Sreg_disp,mask,height,width,size(Ynoisy));
+    L = pano2video(Lreg,mask,height,width,[height, width, c]);
+    E = pano2video(Ereg,mask,height,width,[height, width, c]);
+    S = pano2video(Sreg,mask,height,width,[height, width, c]);
+    S_disp = pano2video(Sreg_disp,mask,height,width,[height, width, c]);
     % Generate panorama
-    [uhat, ~, ~] = svds(reshape(Lreg,[],size(Ynoisy,4)),1);
+    [uhat, ~, ~] = svds(reshape(Lreg,[],1),1);
     pano = reshape(uhat,[height, width]);
 end
 end
